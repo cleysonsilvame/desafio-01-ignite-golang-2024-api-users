@@ -56,14 +56,14 @@ func (a application) deleteByID(id domain.ID) bool {
 	return true
 }
 
-func (a application) updateByID(id domain.ID) *domain.UserWithID {
-	user, ok := a.data[id]
-
-	if !ok {
+func (a application) updateByID(id domain.ID, u domain.User) *domain.UserWithID {
+	if _, ok := a.data[id]; !ok {
 		return nil
 	}
 
-	userWithID := domain.NewUserWithID(id, user)
+	a.data[id] = u
+
+	userWithID := domain.NewUserWithID(id, u)
 
 	return &userWithID
 }

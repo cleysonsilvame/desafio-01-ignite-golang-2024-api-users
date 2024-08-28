@@ -79,23 +79,26 @@ func handleUpdateUserByID(app application) http.HandlerFunc {
 			return
 		}
 
-		user.
-			app.updateByID(user)
+		userToBeInsert := domain.User{
+			FirstName: payload.Name,
+			LastName:  user.LastName,
+			Bio:       payload.Bio,
+		}
 
-		if valid, _ := user.ValidateUser(); !valid {
+		if valid, _ := userToBeInsert.ValidateUser(); !valid {
 			sendJSON(
 				w,
-				Response{Error: "Please provided first_name, last_name and bio for the user"},
+				Response{Error: "Please provided name and bio for the user"},
 				http.StatusBadRequest,
 			)
 			return
 		}
 
-		id := app.insert(user)
+		insertedUser := app.updateByID(id, userToBeInsert)
 
 		sendJSON(
 			w,
-			Response{Data: user},
+			Response{Data: insertedUser},
 			http.StatusOK,
 		)
 	}
